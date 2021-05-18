@@ -17,11 +17,11 @@ public class TodoAppView: ContentfulWidget {
   override public init() {
     super.init()
     _ = onDependenciesInjected { [unowned self] _ in
-      storeSearchQuerySubscription = store.$state.searchQuery.sink {
+      storeSearchQuerySubscription = store.$state.searchQuery.publisher.sink {
         searchQuery = $0
       }
 
-      searchQuerySubscription = $searchQuery
+      searchQuerySubscription = $searchQuery.publisher
         .debounce(for: .seconds(0.5), scheduler: CXWrappers.DispatchQueue(wrapping: DispatchQueue.main))
         .removeDuplicates().sink {
           store.dispatch(.updateSearchResult(query: $0))
@@ -106,7 +106,7 @@ public class TodoAppView: ContentfulWidget {
     return Container().with(classes: ["active-view-container"]).withContent { [unowned self] in
       Space(DSize2(0, 0)).connect(ref: $activeViewTopSpace)
 
-      Dynamic(store.$state.mainViewRoute) {
+      Dynamic(store.$state.mainViewRoute.publisher) {
         switch store.state.mainViewRoute {
         case .none:
           Text("no list selected").with(classes: ["no-active-view-label"])

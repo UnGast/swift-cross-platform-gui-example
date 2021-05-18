@@ -29,21 +29,30 @@
         }
       },
       {
-        "package": "CSDL2",
-        "repositoryURL": "https://github.com/UnGast/CSDL2.git",
+        "package": "FirebladeECS",
+        "repositoryURL": "https://github.com/fireblade-engine/ecs.git",
         "state": {
-          "branch": "master",
-          "revision": "d69ef23b8e2ca88df97da1f5d7ef167bad92bbf7",
-          "version": null
+          "branch": null,
+          "revision": "c997e078178113ff20e733942b81dea341c84f3d",
+          "version": "0.17.4"
         }
       },
       {
-        "package": "CVulkan",
-        "repositoryURL": "https://github.com/UnGast/CVulkan.git",
+        "package": "FirebladeIO",
+        "repositoryURL": "https://github.com/fireblade-engine/io.git",
         "state": {
-          "branch": "master",
-          "revision": "85baa86d58b602191f40b01103bd24dafba642e3",
-          "version": null
+          "branch": null,
+          "revision": "8ffd6456030f0c13f1c2454e8c518ad52f8e8a64",
+          "version": "0.4.0"
+        }
+      },
+      {
+        "package": "FirebladeMath",
+        "repositoryURL": "https://github.com/fireblade-engine/math.git",
+        "state": {
+          "branch": null,
+          "revision": "b6700cf9ddfe00423f789f88f2c3a79132cb2eba",
+          "version": "0.10.0"
         }
       },
       {
@@ -56,21 +65,21 @@
         }
       },
       {
-        "package": "Regex",
-        "repositoryURL": "https://github.com/sharplet/Regex.git",
+        "package": "FirebladeResource",
+        "repositoryURL": "https://github.com/fireblade-engine/resource.git",
         "state": {
           "branch": null,
-          "revision": "76c2b73d4281d77fc3118391877efd1bf972f515",
-          "version": "2.1.1"
+          "revision": "90e456b18116479721b28c900819f53d9bff66c9",
+          "version": "0.2.1"
         }
       },
       {
-        "package": "swift-argument-parser",
-        "repositoryURL": "https://github.com/apple/swift-argument-parser",
+        "package": "swift-crypto",
+        "repositoryURL": "https://github.com/apple/swift-crypto.git",
         "state": {
           "branch": null,
-          "revision": "831ed5e860a70e745bc1337830af4786b2576881",
-          "version": "0.4.1"
+          "revision": "3bea268b223651c4ab7b7b9ad62ef9b2d4143eb6",
+          "version": "1.1.6"
         }
       },
       {
@@ -83,6 +92,15 @@
         }
       },
       {
+        "package": "swift-log",
+        "repositoryURL": "https://github.com/apple/swift-log.git",
+        "state": {
+          "branch": null,
+          "revision": "5d66f7ba25daf4f94100e7022febf3c75e37a6c7",
+          "version": "1.4.2"
+        }
+      },
+      {
         "package": "GL",
         "repositoryURL": "https://github.com/UnGast/swift-opengl.git",
         "state": {
@@ -92,12 +110,21 @@
         }
       },
       {
-        "package": "Vulkan",
-        "repositoryURL": "https://github.com/UnGast/SwiftVulkan.git",
+        "package": "SDL2",
+        "repositoryURL": "https://github.com/ctreffs/SwiftSDL2.git",
         "state": {
-          "branch": "master",
-          "revision": "c9af46ce85dc6eba783914f07735792f971b14ee",
-          "version": null
+          "branch": null,
+          "revision": "886e6552f18240c2403fea2e66435e3bf82d3ef5",
+          "version": "1.2.0"
+        }
+      },
+      {
+        "package": "Vulkan",
+        "repositoryURL": "https://github.com/ctreffs/SwiftVulkan",
+        "state": {
+          "branch": null,
+          "revision": "1e5bf055439e6f90382e88242ed14f57809a5228",
+          "version": "0.1.2"
         }
       },
       {
@@ -110,21 +137,30 @@
         }
       },
       {
-        "package": "SwiftyXMLParser",
-        "repositoryURL": "https://github.com/yahoojapan/SwiftyXMLParser.git",
-        "state": {
-          "branch": "master",
-          "revision": "ec7f183642adf429babd867d1a38c5c6912408ba",
-          "version": null
-        }
-      },
-      {
         "package": "Swim",
         "repositoryURL": "https://github.com/t-ae/swim.git",
         "state": {
-          "branch": "master",
+          "branch": null,
           "revision": "e8e3dc5f6a6f58af40a5c341cb7fbf0d7324dc74",
-          "version": null
+          "version": "3.9.0"
+        }
+      },
+      {
+        "package": "FirebladeTime",
+        "repositoryURL": "https://github.com/fireblade-engine/time.git",
+        "state": {
+          "branch": null,
+          "revision": "cf1bd291364f57e7583bbf49e77b7d5f8fb5927e",
+          "version": "0.1.1"
+        }
+      },
+      {
+        "package": "FirebladeUUID",
+        "repositoryURL": "https://github.com/fireblade-engine/uuid.git",
+        "state": {
+          "branch": null,
+          "revision": "52752aed44110a1e6b8b518d22d2b59a8e42d8b3",
+          "version": "1.1.0"
         }
       }
     ]

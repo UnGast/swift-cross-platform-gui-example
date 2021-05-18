@@ -3,6 +3,8 @@ import CXShim
 @propertyWrapper
 public class MutableBinding<V>: InternalMutableReactiveProperty  {
   public typealias Value = V
+  public typealias Output = Value
+  public typealias Failure = Never
 
   public var value: Value {
     get {
@@ -21,6 +23,8 @@ public class MutableBinding<V>: InternalMutableReactiveProperty  {
     set { value = newValue }
   }
 
+  lazy public private(set) var publisher = PropertyPublisher<Value>(getCurrentValue: { [weak self] in self?.value })
+
   lazy public var projectedValue = MutableReactivePropertyProjection<Value>(getImmutable: { [unowned self] in
     ImmutableBinding(self, get: {
       $0
@@ -31,11 +35,7 @@ public class MutableBinding<V>: InternalMutableReactiveProperty  {
     }, set: {
       $0
     })
-  }, receiveSubscriber: { [unowned self] in
-    self.receive(subscriber: $0)
-  })
-
-  var subscriptions: MutableBinding<V>.Subscriptions = []
+  }, publisher: AnyPublisher(publisher))
 
   private var dependencySubscription: AnyCancellable?
 
@@ -50,7 +50,7 @@ public class MutableBinding<V>: InternalMutableReactiveProperty  {
         dependency.value = _set($0)
       }
 
-      dependencySubscription = dependency.sink { [unowned self] _ in
+      dependencySubscription = dependency.publisher.sink { [unowned self] _ in
         notifyChange()
       }
   }

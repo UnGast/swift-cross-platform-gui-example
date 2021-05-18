@@ -1,21 +1,6 @@
-public enum StylePropertyValue<T> {
-  case inherit
-  case value(T)
+## 5.3.1 RELEASE
 
-  public init?(_ any: AnyStylePropertyValue) {
-    switch any {
-    case .inherit:
-      self = .inherit
-    case let .value(value):
-      if let value = value as? T {
-        self = .value(value)
-      } else {
-        return nil
-      }
-    }
-  }
-}
-
+```swift
 public enum AnyStylePropertyValue {
   case inherit
   case value(Any)
@@ -37,3 +22,6 @@ public enum AnyStylePropertyValue {
     }
   }
 }
+```
+
+compile in release mode crashes when return statement after self.init is not present, but passes when compiling in debug mode

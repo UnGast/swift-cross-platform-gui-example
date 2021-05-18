@@ -108,22 +108,28 @@ open class Root: Parent {
     cumulatedValuesProcessor.resolveSubTree(rootWidget: rootWidget)
   }
 
-  @discardableResult
-  open func consume(_ rawMouseEvent: RawMouseEvent) -> Bool {
-    if let event = rawMouseEvent as? RawMouseMoveEvent {
+  /** - Returns: whether the event was consumed (true) or fell through (false) */
+  final public func receive(rawPointerEvent: RawMouseEvent) -> Bool {
+   if let event = rawPointerEvent as? RawMouseMoveEvent {
+
       mouseMoveEventBurstLimiter.limit { [weak self] in
         if let self = self {
           var operation = ProcessMouseEventOperationDebugData()
           operation.recordStart()
-          self.mouseEventManager.propagate(rawMouseEvent)
+
+          self.mouseEventManager.propagate(rawPointerEvent)
+
           operation.recordEnd()
           self.debugManager.data.storeOperation(operation)
         }
       }
+
     } else {
       var operation = ProcessMouseEventOperationDebugData()
       operation.recordStart()
-      mouseEventManager.propagate(rawMouseEvent)
+
+      mouseEventManager.propagate(rawPointerEvent)
+
       operation.recordEnd()
       self.debugManager.data.storeOperation(operation)
     }

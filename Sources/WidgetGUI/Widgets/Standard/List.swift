@@ -38,7 +38,7 @@ public class List<Item: Equatable>: ContentfulWidget, SlotAcceptingWidgetProtoco
   }
 
   override public func performBuild() {
-    itemsSubscription = _items.sink { [unowned self] in
+    itemsSubscription = _items.publisher.sink { [unowned self] in
       processItemUpdate(old: previousItems, new: $0)
       previousItems = $0
     }

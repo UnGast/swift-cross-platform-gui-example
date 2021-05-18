@@ -27,7 +27,7 @@ public class TodoListItemView: ContentfulWidget {
         }
       }
 
-      Dynamic($editing) {
+      Dynamic($editing.publisher) {
         if editing {
 
           TextInput(text: $updatedDescriptionBuffer.mutable).with(classes: ["description"]).with { instance in
@@ -43,7 +43,7 @@ public class TodoListItemView: ContentfulWidget {
               }
             }
 
-            instance.$focused.sink {
+            instance.$focused.publisher.sink {
               if !$0 {
                 editing = false
               }

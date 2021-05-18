@@ -3,5 +3,3 @@
 @_exported import VisualAppBase
 @_exported import Application
 @_exported import GfxMath
-@_exported import VisualAppBaseImplSDL2OpenGL3NanoVG
-@_exported import Drawing

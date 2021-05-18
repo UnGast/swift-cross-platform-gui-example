@@ -1,30 +1,32 @@
-import VisualAppBase
 import GfxMath
 import Foundation
-import Dispatch
-import ColorizeSwift
 import Events
 import Drawing
+import Swim
 
-public class ImageView: Widget {
-    private var image: Image
-    private var resizedImage: Image?
-    private var resizingImage = false
-    private let onImageResized = EventHandlerManager<Void>()
+public class ImageView: LeafWidget {
+    @ImmutableBinding
+    private var image: Swim.Image<RGBA, UInt8>
+    private var resizedImage: Swim.Image<RGBA, UInt8>?
+    private var imageChanged: Bool = true
+    private var drawableImage: Image2?
+
+    private var imageSubscription: Any?
     
-    public init(image: Image) {
-        self.image = image
+    public init(image imageBinding: ImmutableBinding<Swim.Image<RGBA, UInt8>>) {
+        self._image = imageBinding
         super.init()
-
-        _ = onDestroy(onSizeChanged { [unowned self] _ in
-            if resizingImage {
-                _ = onImageResized.once {
-                    resizedImage = nil
-                }
-            } else {
-                resizedImage = nil
+        
+        var oldImageSize = (image.width, image.height)
+        self.imageSubscription = $image.publisher.sink { [unowned self] newImage in
+            let newImageSize = (newImage.width, newImage.height)
+            if oldImageSize != newImageSize {
+                oldImageSize = newImageSize
+                drawableImage = nil
+                invalidateLayout()
             }
-       })
+            imageChanged = true
+        }
     }
 
     override public func performLayout(constraints: BoxConstraints) -> DSize2 {
@@ -41,33 +43,21 @@ public class ImageView: Widget {
         return constraints.constrain(DSize2(width, height))
     }
 
-    /*override public func renderContent() -> RenderObject? {
-        if bounds.size.width <= 0 || bounds.size.height <= 0 {
-            return nil
+    override public func draw(_ drawingContext: DrawingContext) {
+        if imageChanged, let drawableImage = self.drawableImage {
+            updateResizedImage()
+            try! drawableImage.updateData(resizedImage!)
+        } else if drawableImage == nil {
+            updateResizedImage()
+            drawableImage = Image2(fromRGBA: resizedImage!)
         }
 
-        if !resizingImage && (resizedImage == nil || resizedImage!.width != Int(bounds.size.width) || resizedImage!.height != Int(bounds.size.height)) {
-            resizeImage()
-            return nil
-        } else if resizedImage != nil {
-            return RenderObject.RenderStyle(fill: FixedRenderValue(.Image(resizedImage!, position: globalBounds.min))) {
-                RenderObject.Rectangle(globalBounds)
-            }
-        } else {
-            return nil
-        }
-    }*/
+        drawingContext.drawImage(image: drawableImage!, topLeft: globalBounds.min)
 
-    private func resizeImage() {
-        resizingImage = true
-        DispatchQueue.global(qos: .userInteractive).async { [unowned self] in
-            let resizedImage = image.resize(width: Int(bounds.size.width), height: Int(bounds.size.height))
-            DispatchQueue.main.async {
-                self.resizedImage = resizedImage
-                resizingImage = false
-                onImageResized.invokeHandlers(Void())
-                invalidateRenderState()
-            }
-        }
+        imageChanged = false
+    }
+
+    private func updateResizedImage() {
+        resizedImage = image.resize(width: Int(bounds.size.width), height: Int(bounds.size.height))
     }
 }

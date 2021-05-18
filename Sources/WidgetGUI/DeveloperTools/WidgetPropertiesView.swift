@@ -10,7 +10,7 @@ extension DeveloperTools {
     @DirectContentBuilder override public var content: DirectContent {
       Container().withContent { [unowned self] in
 
-        Dynamic(store.$state.inspectedWidget) {
+        Dynamic(store.$state.inspectedWidget.publisher) {
 
           if let inspectedWidget = store.state.inspectedWidget {
 

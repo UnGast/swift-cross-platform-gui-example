@@ -53,7 +53,7 @@ extension StylePropertyProtocol {
         for child in mirror.allChildren {
           if child.label == name, let property = child.value as? AnyStyleProperty<Value> {
             resolvedValue = property.resolvedValue
-            parentValueSubscription = property.sink { [unowned self] in
+            parentValueSubscription = property.publisher.sink { [unowned self] in
               resolvedValue = $0
             }
             break outerSwitch
@@ -63,7 +63,7 @@ extension StylePropertyProtocol {
 
       resolvedValue = concreteDefaultValue
 
-    case let .some(value):
+    case let .value(value):
       resolvedValue = value
     }
   }
@@ -84,6 +84,8 @@ public class AnyStyleProperty<V>: StylePropertyProtocol, InternalReactivePropert
 
   var concreteDefaultValue: Value
   var defaultValue: StylePropertyValue<Value>
+
+  lazy public private(set) var publisher = PropertyPublisher<Value>(getCurrentValue: { [weak self] in self?.value })
 
   var definitionValue: StylePropertyValueDefinition.Value? = nil {
     didSet {
@@ -110,11 +112,9 @@ public class AnyStyleProperty<V>: StylePropertyProtocol, InternalReactivePropert
     resolvedValue
   }
 
-  var subscriptions: AnyStyleProperty<V>.Subscriptions = []
-
   public init(wrappedValue: Value, default defaultValue: StylePropertyValue<Value>? = nil) {
     self.concreteDefaultValue = wrappedValue
-    self.defaultValue = defaultValue ?? .some(wrappedValue)
+    self.defaultValue = defaultValue ?? .value(wrappedValue)
     self.styleValue = self.defaultValue
     self.resolvedValue = self.concreteDefaultValue
     self.updateResolvedValue()

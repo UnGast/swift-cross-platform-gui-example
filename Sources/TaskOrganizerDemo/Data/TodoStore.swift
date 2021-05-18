@@ -7,7 +7,7 @@ public class TodoStore: Store<TodoStore.State, TodoStore.Mutation, TodoStore.Act
   public init() {
     super.init(initialState: State())
 
-    listsSubscription = $state.lists.sink { [unowned self] _ in
+    listsSubscription = $state.lists.publisher.sink { [unowned self] _ in
       dispatch(.updateSearchResult(query: state.searchQuery))
     }
   }

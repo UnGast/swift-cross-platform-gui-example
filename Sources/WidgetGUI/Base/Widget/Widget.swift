@@ -415,7 +415,7 @@ open class Widget: Bounded, Parent, Child, CustomDebugStringConvertible {
 
     private func setupExplicitConstraintsUpdateTriggers() {
         explicitConstraintsUpdateTriggersSubscription = Publishers.MergeMany([
-            $width, $height, $minWidth, $minHeight, $maxWidth, $maxHeight
+            $width.publisher, $height.publisher, $minWidth.publisher, $minHeight.publisher, $maxWidth.publisher, $maxHeight.publisher
         ]).sink { [unowned self] _ in
             updateExplicitConstraints()
         }
@@ -423,7 +423,7 @@ open class Widget: Bounded, Parent, Child, CustomDebugStringConvertible {
 
     private func setupScrollingEnabled() {
         scrollingEnabledUpdateSubscription = Publishers.MergeMany([
-            $overflowX, $overflowY
+            $overflowX.publisher, $overflowY.publisher
         ]).sink { [unowned self] _ in
             scrollingEnabled = (overflowX == .scroll, overflowY == .scroll)
         }
@@ -434,7 +434,7 @@ open class Widget: Bounded, Parent, Child, CustomDebugStringConvertible {
         scrollMouseWheelHandlerRemover?()
 
         if scrollingEnabled.x || scrollingEnabled.y {
-            $currentScrollOffset.removeDuplicates().sink { [unowned self] in
+            $currentScrollOffset.publisher.removeDuplicates().sink { [unowned self] in
                 let updatedXProgress = $0.x / layoutedSize.width
                 if !updatedXProgress.isNaN && updatedXProgress != pseudoScrollBarX.scrollProgress {
                     pseudoScrollBarX.scrollProgress = updatedXProgress
@@ -446,14 +446,14 @@ open class Widget: Bounded, Parent, Child, CustomDebugStringConvertible {
                 }
             }.store(in: &scrollSubscriptions)
 
-            pseudoScrollBarX.$scrollProgress.removeDuplicates().sink { [unowned self] in
+            pseudoScrollBarX.$scrollProgress.publisher.removeDuplicates().sink { [unowned self] in
                 let updated = $0 * layoutedSize.width
                 if updated != currentScrollOffset.x {
                     currentScrollOffset.x = updated
                 }
             }.store(in: &scrollSubscriptions)
 
-            pseudoScrollBarY.$scrollProgress.removeDuplicates().sink { [unowned self] in
+            pseudoScrollBarY.$scrollProgress.publisher.removeDuplicates().sink { [unowned self] in
                 let updated = $0 * layoutedSize.height
                 if updated != currentScrollOffset.y {
                     currentScrollOffset.y = updated
