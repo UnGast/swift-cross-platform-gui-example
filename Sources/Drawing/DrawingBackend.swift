@@ -35,6 +35,10 @@ open class DrawingBackend {
     
   }
 
+  open func drawImage(image: Image2, topLeft: DVec2) {
+    fatalError("drawImage() not implemented")
+  }
+
   /**
   // TODO: maybe the result should be a rect to also have access to the position
   */

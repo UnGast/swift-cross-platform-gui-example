@@ -31,14 +31,15 @@ extension DeveloperTools {
     }
 
     @DirectContentBuilder override public var content: DirectContent {
-      Container().with(styleProperties: {
+      /*Container().with(styleProperties: {
         (\.$direction, .column)
         (\.$alignContent, .stretch)
         (\.$overflowY, .scroll)
       }).withContent { [unowned self] in
         buildMenu()
         buildActiveView()
-      }.provide(dependencies: store, inspectedRoot)
+      }.provide(dependencies: store, inspectedRoot)*/
+      Container()
     }
 
     func buildMenu() -> Widget {
@@ -58,14 +59,15 @@ extension DeveloperTools {
     }
 
     @DirectContentBuilder func buildActiveView() -> DirectContent {
-      Dynamic(store.$state.activateMainRoute) { [unowned self] in
+      /*Dynamic(store.$state.activateMainRoute) { [unowned self] in
         switch store.state.activateMainRoute {
         case .inspector:
           DeveloperTools.InspectorView()
         case .performance:
           DeveloperTools.PerformanceView()
         }
-      }
+      }*/
+      Container()
     }
 
     override public var style: Style {

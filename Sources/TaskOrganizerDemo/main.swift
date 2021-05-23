@@ -1,36 +1,15 @@
-import VisualAppBase
-import VisualAppBaseImplSDL2OpenGL3NanoVG
-import WidgetGUI
-import Dispatch
-import GfxMath
-import GL
-import CSDL2
-import ColorizeSwift
+import VertexGUI
 
-// TODO: create a subclass of App, DesktopApp which supports windows/screens which can support different resolutions --> renderContexts --> different text boundsSize
-open class TodoApp: WidgetsApp {    
-    let guiRoot: WidgetGUI.Root
-    let store: TodoStore = TodoStore()
+let app = try VertexGUI.Application()
 
-    public init() {
-        guiRoot = WidgetGUI.Root(rootWidget: Container().withContent {
-            TodoAppView().with(styleProperties: {
-                (\.$grow, 1)
-                (\.$alignSelf, .stretch)
-            })
-        }.provide(dependencies: store))
-        super.init(baseApp: SDL2OpenGL3NanoVGVisualApp())
-    }
+let store: TodoStore = TodoStore()
 
-    override open func setup() {
-        let window = createWindow(guiRoot: guiRoot, options: Window.Options(), immediate: true)
-        #if DEBUG
-        //openDevTools(for: window)
-        #endif
-    }
-}
-
-let app = TodoApp()
+try app.createWindow(widgetRoot: Root(rootWidget: Container().withContent {
+    TodoAppView().with(styleProperties: {
+        (\.$grow, 1)
+        (\.$alignSelf, .stretch)
+    })
+}.provide(dependencies: store)))
 
 do {
     try app.start()

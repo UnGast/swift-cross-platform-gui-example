@@ -7,7 +7,7 @@ public class SearchResultsView: ContentfulWidget {
   @DirectContentBuilder override public var content: DirectContent {
     Container().with(classes: ["lists-container"]).withContent { [unowned self] in
 
-      Dynamic(store.$state.searchResult) {
+      Dynamic(store.$state.searchResult.publisher) {
 
         (store.state.searchResult?.filteredLists ?? []).map { list in
           Container().with(classes: ["list"]).withContent {

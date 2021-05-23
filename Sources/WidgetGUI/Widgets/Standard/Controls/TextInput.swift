@@ -1,5 +1,6 @@
 import GfxMath
 import Foundation
+import SkiaKit
 import VisualAppBase
 import CXShim
 import Drawing
@@ -21,7 +22,7 @@ public final class TextInput: ContentfulWidget
   @Reference private var textWidget: Text
   @Reference private var caretWidget: Drawing
 
-  @StyleProperty public var caretColor: Color = .lightBlue
+  @StyleProperty public var caretColor: GfxMath.Color = .lightBlue
 
   private var caretIndex: Int = 2
   private var lastDrawTimestamp: Double = 0.0
@@ -59,7 +60,7 @@ public final class TextInput: ContentfulWidget
 
       updatePlaceholderVisibility()
 
-      textSubscription = self._text.sink { [unowned self] in
+      textSubscription = self._text.publisher.sink { [unowned self] in
         textBuffer = $0
         if caretIndex > textBuffer.count {
           caretIndex = textBuffer.count
@@ -210,8 +211,8 @@ public final class TextInput: ContentfulWidget
     }
   }
 
-  public func drawCaret(_ drawingContext: DrawingContext) {
-    let timestamp = context.applicationTime
+  public func drawCaret(_ canvas: Canvas) {
+    /*let timestamp = context.applicationTime
     caretBlinkTime += timestamp - lastDrawTimestamp
     lastDrawTimestamp = timestamp
 
@@ -220,7 +221,7 @@ public final class TextInput: ContentfulWidget
     drawingContext.drawLine(
       from: DVec2(caretTranslationX, 0),
       to: DVec2(caretTranslationX, textWidget.layoutedSize.height),
-      paint: Paint(strokeWidth: caretWidth, strokeColor: caretColor.adjusted(alpha: UInt8(caretBlinkProgress * 255))))
+      paint: Paint(strokeWidth: caretWidth, strokeColor: caretColor.adjusted(alpha: UInt8(caretBlinkProgress * 255))))*/
   }
 
   override public func destroySelf() {

@@ -1,24 +1,18 @@
 import CXShim
 
-public class ReactivePropertyProjection<V>: Publisher {
+public class ReactivePropertyProjection<V> {
   public typealias Value = V
-  public typealias Output = V
-  public typealias Failure = Never
 
   private let getImmutable: () -> ImmutableBinding<Value>
-  private let receiveSubscriber: (AnySubscriber<Value, Never>) -> ()
+  public let publisher: AnyPublisher<Value, Never>
 
   public var immutable: ImmutableBinding<Value> {
     getImmutable()
   }
 
-  init(getImmutable: @escaping () -> ImmutableBinding<Value>, receiveSubscriber: @escaping (AnySubscriber<Value, Never>) -> ()) {
+  init(getImmutable: @escaping () -> ImmutableBinding<Value>, publisher: AnyPublisher<Value, Never>) {
     self.getImmutable = getImmutable
-    self.receiveSubscriber = receiveSubscriber
-  }
-
-  public func receive<S: Subscriber>(subscriber: S) where Failure == S.Failure, Output == S.Input {
-    receiveSubscriber(AnySubscriber(subscriber))
+    self.publisher = publisher
   }
 }
 
@@ -29,8 +23,8 @@ public class MutableReactivePropertyProjection<V>: ReactivePropertyProjection<V>
     getMutable()
   }
 
-  init(getImmutable: @escaping () -> ImmutableBinding<Value>, getMutable: @escaping () -> MutableBinding<Value>, receiveSubscriber: @escaping (AnySubscriber<Value, Never>) -> ()) {
+  init(getImmutable: @escaping () -> ImmutableBinding<Value>, getMutable: @escaping () -> MutableBinding<Value>, publisher: AnyPublisher<Value, Never>) {
     self.getMutable = getMutable
-    super.init(getImmutable: getImmutable, receiveSubscriber: receiveSubscriber)
+    super.init(getImmutable: getImmutable, publisher: publisher)
   }
 }

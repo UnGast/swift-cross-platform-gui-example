@@ -54,33 +54,3 @@ public struct RawMouseMoveEvent: RawMouseEvent {
         self.previousPosition = previousPosition
     }
 }
-/*
-public struct RawMouseEnterEvent: RawMouseEvent {
-    public var position: DPoint2
-    public var previousPosition: DPoint2
-    public var move: DVec2 {
-        get {
-            DVec2(position.x - previousPosition.x, position.y - previousPosition.y)
-        }
-    }
-
-    public init(position: DPoint2, previousPosition: DPoint2) {
-        self.position = position
-        self.previousPosition = previousPosition
-    }
-}
-
-public struct RawMouseLeaveEvent: RawMouseEvent {
-    public var position: DPoint2
-    public var previousPosition: DPoint2
-    public var move: DVec2 {
-        get {
-            DVec2(position.x - previousPosition.x, position.y - previousPosition.y)
-        }
-    }
-
-    public init(position: DPoint2, previousPosition: DPoint2) {
-        self.position = position
-        self.previousPosition = previousPosition
-    }
-}*/

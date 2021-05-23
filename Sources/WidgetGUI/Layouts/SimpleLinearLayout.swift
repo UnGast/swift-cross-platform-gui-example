@@ -29,9 +29,9 @@ public class SimpleLinearLayout: Layout {
   override public func setupChildrenPropertySubscription() {
     childrenPropertySubscription = Publishers.MergeMany(widgets.flatMap {
       [
-        $0.$shrink.map { $0 as Any }.eraseToAnyPublisher(),
-        $0.$grow.map { $0 as Any }.eraseToAnyPublisher(),
-        $0.$alignSelf.map { $0 as Any }.eraseToAnyPublisher()
+        $0.$shrink.publisher.map { $0 as Any }.eraseToAnyPublisher(),
+        $0.$grow.publisher.map { $0 as Any }.eraseToAnyPublisher(),
+        $0.$alignSelf.publisher.map { $0 as Any }.eraseToAnyPublisher()
       ]
     }).sink { [unowned self] _ in
       invalidateLayout()

@@ -40,7 +40,7 @@ extension DeveloperTools {
           (\.$direction, .column)
           (\.$padding, Insets(left: 16))
         }).withContent {
-          Dynamic($expanded) {
+          Dynamic($expanded.publisher) {
             if expanded {
               inspectedWidget.children.map { 
                 WidgetNestingView($0, depth: depth + 1)

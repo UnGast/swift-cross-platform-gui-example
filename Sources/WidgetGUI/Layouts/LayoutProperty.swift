@@ -19,7 +19,7 @@ public class LayoutProperty<T>: AnyLayoutProperty {
   }
 
   func setupInstancePropertySubscription() {
-    instancePropertySubscription = layoutInstance!.container[keyPath: keyPath].sink { [unowned self] _ in
+    instancePropertySubscription = layoutInstance!.container[keyPath: keyPath].publisher.sink { [unowned self] _ in
       layoutInstance!.container.invalidateLayout()
     }
   }

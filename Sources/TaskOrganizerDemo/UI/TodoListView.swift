@@ -24,11 +24,11 @@ public class TodoListView: ContentfulWidget {
     super.init()
 
     _ = onDependenciesInjected { [unowned self] in
-      listIdSubscription = $listId.sink { _ in
+      listIdSubscription = $listId.publisher.sink { _ in
         resolveList()
       }
 
-      storeListsSubscription = store.$state.lists.sink { _ in
+      storeListsSubscription = store.$state.lists.publisher.sink { _ in
         resolveList()
       }
     }
@@ -46,7 +46,7 @@ public class TodoListView: ContentfulWidget {
 
       Container().with(classes: ["header"]).withContent {
         
-        Dynamic($editingName) {
+        Dynamic($editingName.publisher) {
           if editingName {
             TextInput(text: $updatedNameBuffer.mutable, placeholder: "list name").with(classes: ["list-name", "list-name-input"]).with { widget in
               _ = widget.onMounted {
@@ -70,7 +70,7 @@ public class TodoListView: ContentfulWidget {
           }
         }
 
-        Dynamic($editable) {
+        Dynamic($editable.publisher) {
           if editable {
             Button().withContent {
               Text("add todo")

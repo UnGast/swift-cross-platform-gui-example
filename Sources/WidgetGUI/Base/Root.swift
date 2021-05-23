@@ -1,5 +1,6 @@
 import Foundation
 import GfxMath
+import SkiaKit
 import Drawing
 import Dispatch
 import VisualAppBase
@@ -108,22 +109,28 @@ open class Root: Parent {
     cumulatedValuesProcessor.resolveSubTree(rootWidget: rootWidget)
   }
 
-  @discardableResult
-  open func consume(_ rawMouseEvent: RawMouseEvent) -> Bool {
-    if let event = rawMouseEvent as? RawMouseMoveEvent {
+  /** - Returns: whether the event was consumed (true) or fell through (false) */
+  final public func receive(rawPointerEvent: RawMouseEvent) -> Bool {
+   if let event = rawPointerEvent as? RawMouseMoveEvent {
+
       mouseMoveEventBurstLimiter.limit { [weak self] in
         if let self = self {
           var operation = ProcessMouseEventOperationDebugData()
           operation.recordStart()
-          self.mouseEventManager.propagate(rawMouseEvent)
+
+          self.mouseEventManager.propagate(rawPointerEvent)
+
           operation.recordEnd()
           self.debugManager.data.storeOperation(operation)
         }
       }
+
     } else {
       var operation = ProcessMouseEventOperationDebugData()
       operation.recordStart()
-      mouseEventManager.propagate(rawMouseEvent)
+
+      mouseEventManager.propagate(rawPointerEvent)
+
       operation.recordEnd()
       self.debugManager.data.storeOperation(operation)
     }
@@ -238,7 +245,7 @@ open class Root: Parent {
     return stepData
   }
 
-  open func draw(_ drawingContext: DrawingContext) {
+  open func draw(_ drawingContext: DrawingContext, canvas: SkiaKit.Canvas) {
     var operation = DrawOperationDebugData()
     operation.recordStart()
 
@@ -247,7 +254,7 @@ open class Root: Parent {
     rootDrawingContext.transform(.scale(DVec2(scale, scale)))
     rootDrawingContext.lock()
 
-    drawingManager.processQueue(widgetLifecycleManager.queues[.draw]!, drawingContext: rootDrawingContext)
+    drawingManager.processQueue(widgetLifecycleManager.queues[.draw]!, drawingContext: rootDrawingContext, canvas: canvas)
     widgetLifecycleManager.queues[.draw]?.clear()
 
     operation.recordEnd()

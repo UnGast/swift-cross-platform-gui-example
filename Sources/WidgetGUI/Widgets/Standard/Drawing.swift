@@ -1,11 +1,12 @@
 import VisualAppBase
 import GfxMath
+import SkiaKit
 import Drawing
 
 public class Drawing: LeafWidget {
-  private let _draw: (DrawingContext) -> ()
+  private let _draw: (Canvas) -> ()
 
-  public init(draw: @escaping (DrawingContext) -> ()) {
+  public init(draw: @escaping (Canvas) -> ()) {
       self._draw = draw
   }
 
@@ -13,7 +14,7 @@ public class Drawing: LeafWidget {
     constraints.constrain(DSize2(40, 40)) // arbitrary size to see something when min size constraints is 0
   }
 
-  override public func draw(_ drawingContext: DrawingContext) {
-    _draw(drawingContext)
+  override public func draw(_ drawingContext: DrawingContext, canvas: Canvas) {
+    _draw(canvas)
   }
 }
